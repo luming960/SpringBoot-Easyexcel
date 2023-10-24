@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wlb.file.mapper.UserphoneMapper">
+
+    <select id="selectUAndP" resultType="Userphone">
+        SELECT a.*,b.phone_name,b.brand,b.phone_color,b.ram,b.rom,b.user_id FROM user a,phone b WHERE a.id = b.user_id
+    </select>
+
+    <insert id="saveUsers">
+        insert into user (name,sex,age,birthday)
+        values
+        <foreach collection="list" separator="," item="user">
+            (#{user.name},#{user.sex},#{user.age},#{user.birthday})
+        </foreach>
+    </insert>
+
+    <insert id="savePhones">
+        insert into phone (phone_name,brand,phone_color,ram,rom,user_id)
+        values
+        <foreach collection="list" separator="," item="phone">
+            (#{phone.phone_name},#{phone.brand},#{phone.phone_color},#{phone.ram},#{phone.rom},#{phone.user_id})
+        </foreach>
+    </insert>
+
+</mapper>

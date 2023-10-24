@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>用户手机列表页</title>
+    <!-- 项目启动之后实际生效的是th:href，href里面的在项目里面不生效了，但是设置成这样直接浏览器打开的时候会生效，方便我调页面-->
+    <link rel="stylesheet" href="../static/css/index.css" th:href="@{/static/css/index.css}">
+    <script type="text/javascript" src="../static/js/jquery-2.1.1.min.js" th:src="@{/static/js/jquery-2.1.1.min.js}"></script>
+</head>
+<body>
+<a href="/user/toIndex"><input type="button" value="返回主页"/></a>
+<input id="findAll" type="button" value="查询全部"/>
+<a href="/up/toUploadPage" class="skip"><input type="button" value="用户手机上传"/></a>
+<a href="/up/exportWeb1" class="skip"><input type="button" value="导出(单sheet)"/></a>
+<a href="/up/exportWeb2" class="skip"><input type="button" value="导出(多sheet)"/></a>
+<table>
+    <tr>
+        <th>姓名</th>
+        <th>性别</th>
+        <th>年龄</th>
+        <th>出生日期</th>
+        <th>手机名称</th>
+        <th>手机品牌</th>
+        <th>手机颜色</th>
+        <th>运行内存</th>
+        <th>内存容量</th>
+        <th>用户ID</th>
+    </tr>
+    <tbody id="upTable"></tbody>
+</table>
+
+<script type="text/javascript">
+
+    $("#findAll").click(function (){
+        $.ajax({
+            type:"POST",
+            url:"/up/getAll",
+            data:{},
+            success:function (list){
+                var html;
+                for(var i=0;i<list.length;i++){
+                    html+="<tr><td>"+list[i].name+
+                        "</td><td>"+list[i].sex+
+                        "</td><td>"+list[i].age+
+                        "</td><td>"+list[i].birthday+
+                        "</td><td>"+list[i].phone_name+
+                        "</td><td>"+list[i].brand+
+                        "</td><td>"+list[i].phone_color+
+                        "</td><td>"+list[i].ram+
+                        "</td><td>"+list[i].rom+
+                        "</td><td>"+list[i].user_id+"</td></tr>"
+                }
+                $("#upTable").html(html);
+            }
+        })
+    })
+</script>
+</body>
+</html>

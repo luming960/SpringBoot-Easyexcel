@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wlb.file.mapper.PhoneMapper">
+
+    <select id="getAllPhones" resultType="Phone">
+        SELECT * FROM phone
+    </select>
+
+    <insert id="saveAllPhones">
+        insert into phone (phone_name,brand,phone_color,ram,rom,user_id)
+        values
+        <foreach collection="list" separator="," item="phone">
+            (#{phone.phone_name},#{phone.brand},#{phone.phone_color},#{phone.ram},#{phone.rom},#{phone.user_id})
+        </foreach>
+    </insert>
+
+</mapper>

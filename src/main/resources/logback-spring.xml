@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="10 seconds" >
+    <contextName>logback-voice</contextName>
+    <springProperty scope="context" name="voicePort" source="server.port"/>
+    <springProperty scope="context" name="logRollingPath" source="logging.logback.rollingpolicy.path"/>
+
+    <property name="log.path" value="/var/log"/>
+    <!-- 日志文件大小,超过这个大小将被压缩 -->
+    <property name="log.max.size" value="200MB"/>
+    <!-- 日志最大的历史 60天 -->
+    <property name="max.history" value="60"/>
+
+    <!--输出到控制台-->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern> <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %C[%L] ==> %msg%n</pattern></Pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!--此日志appender是为开发使用，只配置最底级别，控制台输出的日志级别是大于或等于此级别的日志信息-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+    </appender>
+
+    <!--输出到文件-->
+
+    <!-- 时间滚动输出 level为 INFO 日志 -->
+    <appender name="VOICE_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}/zhaokai.log</file>
+        <!--日志文件输出格式-->
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %C[%L] ==> %msg%n</pattern>
+            <charset>UTF-8</charset> <!-- 设置字符集 -->
+        </encoder>
+        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 日志归档 -->
+            <fileNamePattern>${logRollingPath}/voice-${voicePort}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${log.max.size}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>${max.history}</maxHistory>
+        </rollingPolicy>
+        <!-- 此日志文件记录INFO级别及以上的 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+<!--            <onMismatch>DENY</onMismatch>-->
+        </filter>
+    </appender>
+
+    <!--异步日志-->
+    <appender name="dayLogAsyncAppender" class="ch.qos.logback.classic.AsyncAppender">
+        <includeCallerData>true</includeCallerData>
+        <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+        <queueSize>512</queueSize>
+        <appender-ref ref="VOICE_FILE"/>
+    </appender>
+
+    <!--开发环境:打印控制台-->
+    <springProfile name="test">
+        <logger name="com.tky.voiceflytec" level="debug"/>
+    </springProfile>
+
+    <!--全局配置，但是其优先级小于自定义局部配置logger-->
+    <root level="info">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="VOICE_FILE" />
+    </root>
+</configuration>

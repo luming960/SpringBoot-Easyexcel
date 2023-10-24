@@ -1,0 +1,21 @@
+spring:
+  profiles:
+    active: test
+---
+#--------------------测试---------------------
+spring:
+  profiles: test
+  cloud:
+    nacos:
+      config:
+        server-addr: 192.168.137.31:8848
+        group: DEFAULT_GROUP
+        file-extension: yaml
+        username: nacos
+        password: nacos
+        namespace: ab1f591c-0775-4a7d-96d4-df0a8cb28a52
+        check-remote: true
+        extension-configs:
+          - data-id: springboot-easyexcel.yaml
+            group: DEFAULT_GROUP
+            refresh: true

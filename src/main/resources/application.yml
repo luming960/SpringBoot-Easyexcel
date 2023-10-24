@@ -1,0 +1,36 @@
+##服务器配置
+#server:
+#  port: 8080
+#  tomcat:
+#    uri-encoding: utf-8
+#
+#spring:
+#  #数据源
+#  datasource:
+#    url: jdbc:mysql://192.168.1.11:3306/excel?serverTimezone=Asia/Shanghai
+#    username: root
+#    password: ZhaoKai$1
+#  #视图层控制
+#  mvc:
+#    static-path-pattern: /static/**
+#    view:
+#      prefix: classpath:/templates/
+#      suffix: .html
+#  thymeleaf:
+#    cache: false
+#
+##Mybatis扫描
+#mybatis:
+#  mapper-locations: classpath:mapper/*.xml
+#  #起别名。可省略写mybatis的xml中的resultType的全路径
+#  type-aliases-package: com.wlb.file.pojo
+#
+## Excel存放位置
+#excel:
+#  path: D:\kaifaTestWorkSpace\easyexcel-master\easyexcel-master\SpringBoot-Easyexcel\src\main\resources\excel\
+#
+#logging:
+#  logback:
+#    rollingpolicy:
+#      path: log
+#    config: classpath:logback-spring.xml

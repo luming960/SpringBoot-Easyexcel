@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: springboot-easyexcel
+  cloud:
+    nacos:
+      username: nacos
+      password: nacos
+      config:
+        server-addr: 198.219.4.125:8849
+        group: DEFAULT_GROUP
+        file-extension: yaml
+        extension-configs:
+          - data-id: irtm-public.yaml
+            group: DEFAULT_GROUP
+            refresh: true
